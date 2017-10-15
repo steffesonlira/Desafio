@@ -1,0 +1,125 @@
+Private Sub btnExecutar_Click()
+' napp = número andares à percorrer no prédio
+' npe = número de passageiros embarcantes
+' npd = número de passageiros desembarcantes
+' nppa = número de passageiros por andar
+' npt = número de passageiros total
+' ntv = número total de viagens
+' nvp = número de viagens à percorrer
+' soma = variável temporária utilizada dentro da laço para satisfazer a restrição de 6 pessoas dentro do elevador
+' npte = número de pessoas totais embarcante
+
+    Dim npte, nap, npe, npd, nppa, npt, ntv, nvp, soma As Integer
+    
+    'Inicia o contador de viagens
+    nvp = 0
+    
+    'Inicia o número de passageiros dentro do elevador
+    nppa = 0
+    
+    'Guarda na variável o valor selecionado na combobox
+    ntv = CInt(cboNumeroViagens.Text)
+    
+    Do While nvp < ntv
+        'Inicia o elevador no térreo
+        napp = 0
+        Do While napp <= 9
+            'Se o elevador estiver no térreo(0), então só há embarque
+            If napp = 0 Then
+                npe = CInt(InputBox("Digite o número de passageiros embarcantes no " & vbCr & IIf(CStr(napp) = "0", "Térreo", CStr(napp) & "º andar"), "Embarque"))
+                npd = 0
+            'Se o elevador estiver no último andar (9), então só há desembarque
+            ElseIf napp = 9 Then
+                npd = CInt(InputBox("Digite o número de passageiros desembarcantes no " & vbCr & IIf(CStr(napp) = "0", "Térreo", CStr(napp) & "º andar"), "Desembarque"))
+                npe = 0
+            Else
+                npe = CInt(InputBox("Digite o número de passageiros embarcantes no  " & vbCr & IIf(CStr(napp) = "0", "Térreo", CStr(napp) & "º andar"), "Embarque"))
+                npd = CInt(InputBox("Digite o número de passageiros desembarcantes no " & vbCr & IIf(CStr(napp) = "0", "Térreo", CStr(napp) & "º andar"), "Desembarque"))
+            End If
+            
+            ' Verifica quantos passageiros existem no andar em questão
+            If ((nppa - npd) + npe) > 6 Then
+            
+                'Atribui o cálculo com erro a variável soma
+                soma = ((nppa - npd) + npe)
+                
+                Do While soma > 6
+                    'Emite uma mensagem de erro para o usuário
+                    MsgBox ("O elevador comporta no máximo 6 pessoas." & vbCr & "Por favor, digite um número inferior!"), vbCritical
+                    
+                    'Zera a variável soma
+                    soma = 0
+                    
+                    'Se o elevador estiver no térreo(0), então só há embarque
+                    If napp = 0 Then
+                        npe = CInt(InputBox("Digite o número de passageiros embarcantes no " & vbCr & IIf(CStr(napp) = "0", "Térreo", CStr(napp) & "º andar"), "Embarque"))
+                        npd = 0
+                    'Se o elevador estiver no último andar (9), então só há desembarque
+                    ElseIf napp = 9 Then
+                        npd = CInt(InputBox("Digite o número de passageiros desembarcantes no " & vbCr & IIf(CStr(napp) = "0", "Térreo", CStr(napp) & "º andar"), "Desembarque"))
+                        npe = 0
+                    Else
+                        npe = CInt(InputBox("Digite o número de passageiros embarcantes no  " & vbCr & IIf(CStr(napp) = "0", "Térreo", CStr(napp) & "º andar"), "Embarque"))
+                        npd = CInt(InputBox("Digite o número de passageiros desembarcantes no " & vbCr & IIf(CStr(napp) = "0", "Térreo", CStr(napp) & "º andar"), "Desembarque"))
+                    End If
+                    
+                    ' Realiza o cálculo de quantos passageiros existem no andar em questão
+                    soma = (soma - npd) + npe
+                Loop
+                
+                'Recupera o valor utilizado na variável soma e aplica o número de passageiros por andar, agora respeitando a restrição de 6 pessoas
+                nppa = nppa + soma
+                
+                Else
+                
+                ' Realiza o cálculo de quantos passageiros existem no andar em questão
+                nppa = ((nppa - npd) + npe)
+                
+            End If
+            
+            ' condição se caso houver numero negativo de pessoas no elevador sera zerado
+            nppa = IIf(nppa < 0, 0, nppa)
+            
+            ' soma de todos os embarcantes no elevador
+            npte = npte + npe
+            
+            
+            MsgBox (IIf(CStr(napp) = "0", "Térreo:", CStr(napp) & "º andar:") & vbCr & vbCr & vbCr & _
+            "Número de passageiros embarcantes: " & CStr(npe) & vbCr & vbCr & _
+            "Número de passageiros desembarcantes: " + CStr(npd) & vbCr & vbCr & _
+            "Número de passageiros totais embarcantes: " + CStr(npte) & vbCr & vbCr & _
+            "Número de passageiros neste andar: " & CStr(nppa)), vbInformation
+            
+            'Sobe o elevador para o próximo andar
+            napp = napp + 1
+        Loop
+        
+        'Somatória do número de passageiros restantes de cada viagem
+        npt = npt + nppa
+        
+        MsgBox ("Nesta viagem " & CStr(npt) & " passageiros chegaram até o fim"), vbInformation
+        MsgBox ("No momento " & CStr(npte) & " passageiros embarcaram no elevador"), vbExclamation
+        
+        
+        'Incrementa o contador de viagens
+        nvp = nvp + 1
+    Loop
+    
+End Sub
+
+Private Sub lblNumeroViagens_Click()
+
+End Sub
+
+Private Sub UserForm_Initialize()
+    Dim numero As Integer
+    
+    'Inicia a variável de limite de viagens
+    numero = 30
+    
+    'Faz um laço do 1 até o 30 para permitir a escolha de quantas viagens diárias você quer realizar
+    For i = 1 To numero Step 1
+        'Adiciona o número na combobox
+        cboNumeroViagens.AddItem (i)
+    Next
+End Sub
