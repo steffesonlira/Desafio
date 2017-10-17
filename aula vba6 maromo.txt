@@ -1,0 +1,62 @@
+Option Explicit
+
+Sub exemplo1()
+
+'MsgBox Abs(-33)
+'MsgBox Cos(45)
+'MsgBox Sin(45)
+'MsgBox Exp(1)
+'MsgBox Fix(3.99)
+'MsgBox Hex(16)
+'MsgBox Sgn(0)
+'MsgBox Sqr(25)
+
+End Sub
+Sub exemplo2()
+
+Dim palavra As String
+palavra = "Será que vai ser campeão"
+'MsgBox UCase(Mid(palavra, 3, 5))
+'MsgBox Left(palavra, 8)
+'MsgBox Right(palavra, 8)
+'MsgBox Len(palavra)
+
+End Sub
+
+Sub exemplotexto()
+
+Dim tam As Integer, pri_espaco As Integer, i As Integer
+Dim ult_espaco As Integer, nome As String
+Dim ult_nome As String, pri_nome As String
+nome = InputBox("Digite um nome com sobrenome")
+tam = Len(nome)
+'econtrar o primeiro espaco
+For i = 1 To tam
+    If Mid(nome, i, 1) = " " Then
+    pri_espaco = i
+    Exit For
+    End If
+    Next
+    'encontrar ultimo espaço
+
+For i = tam To 1 Step -1
+    If Mid(nome, i, 1) = " " Then
+    ult_espaco = i
+    Exit For
+    End If
+    Next
+    
+    pri_nome = Left(nome, pri_espaco)
+    ult_nome = Right(nome, tam - ult_espaco)
+    Dim juntar As String
+    juntar = UCase(ult_nome & " , " & pri_nome)
+    MsgBox juntar
+    
+
+End Sub
+
+Function converter(nome As String)
+
+
+
+End Function
